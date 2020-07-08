@@ -1,0 +1,35 @@
+1) The Script should be run as a Schedule from an Ubuntu Linux server.
+2) The Script should read the Input csv file named app-monitoring.csv which will be in the same folder
+2) The csv will have hte list of servers to monitor, db, process(process name)
+3 The script should interpret the action as below
+Leve = 0 monitor the server
+Level =1 monitor the server and db with the credentials
+Level = 2 monitor the server, l the process mentioned in process columns (by process name)
+Level =3 Monitor the server, db, and all processes mentioned
+4) The monitoring process should be repeated for each servre (row) in the input csv file
+5) if Level =0 , check if the Linux server is alive. If server down send a notification based on notificaiton section  
+6) if Level =1 establish connection to db using the db details, run a basic query against table name . (assume as table1)
+7) if Level =2 establish connection to server, check if the process (with the process name) running on the server
+8) if Level = 3, establish connection to server, run query againt db , check if hte process (with the process names) running
+9) Consolidate the failures server wise.
+10) after validating all the servers in the file do the following.
+11) If any failure send the following message format through email
+
+Requested Output:
+-----------------
+The Servers,- (server1, server2, server3) are down . Requesting immediate attention
+The DB (db1 running on server 1, db2 running on server2 , db3 running on server3) are down Requesting immediate attention
+The process (process1, process2) running on server1 down. requesting immediate attention
+
+
+Notification Mechanism
+The notification emails should be added in a file named mail.cfg. Note that multiple emails can be added here like below
+mail.cfg
+eail@gmail.com
+email2@gmail.com
+
+The outbound mail can be send through another smtp server. The smtp details can be given in another cfg file called mailconfig.cfg
+
+Script running mechanism
+1) We need two script file. The first script file should be a schedule script which we should be able to run on a linux server as runnable script. We can keep this as shell script as well.This script should call the Python monitoring script calld - Server-monitor. We will schedule the schedule script through cron (may be every 10 min)
+2) The monitoring script should run and go execute the logic mentioned above less
