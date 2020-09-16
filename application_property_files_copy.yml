@@ -1,0 +1,62 @@
+---
+- hosts: <inventory_name>
+  become: yes
+  become_method: sudo
+  remote_user: <remote_server_username>
+  gather_facts: no
+
+  vars:
+    local_tomcat_config_path: "<path_to_store_tomcat_files_in_ansible_server>"
+
+  tasks:
+  - name: "[TASK_1] Checking tomcat applications in remote server"
+    shell: "ps -ef | grep java | grep -v grep | grep 'org.apache.catalina.startup.Bootstrap' | awk -F 'catalina.base=' '{print $2}' | awk  '{print $1}' | wc -l"
+    register: tomcat_status_count
+    tags: check_tomcat_count
+
+  - debug:
+      msg: "{% if tomcat_status_count.stdout == '' %} No tomcats are running. {% else %} Tomcats check count is : {{ tomcat_status_count.stdout }} {% endif %}"
+    tags: check_tomcat_count
+
+  - name: "[TASK_2] Checking tomcat process in remote server"
+    shell: "ps -ef | grep java | grep -v grep | grep 'org.apache.catalina.startup.Bootstrap' | awk -F 'catalina.base=' '{print $2}' | awk  '{print $1}'"
+    register: tomcat_status
+    tags: check_tomcat
+
+  - debug:
+      msg: "{% if tomcat_status_count.stdout == '0' %} No tomcat is running ({{ ansible_host }}) ==> NULL {% elif tomcat_status_count.stdout == '1' %} Tomcat directory is ({{ ansible_host }}) ==> {{ tomcat_status.stdout }} {% elif tomcat_status_count.stdout > '1' %} Multiple tomcats are running ({{ ansible_host }}) ==> {{ item }} {% endif %}"
+    with_items: "{{ tomcat_status.stdout.split('\n') }}"
+    when: "tomcat_status_count.stdout >= '1'"
+    tags: check_tomcat
+
+  - name: "[TASK_3] Finding xml files in tomcat path"
+    #shell: "find {{ item }} -type f \\( -iname *.xml -o -iname *.properties \\)"
+    find:
+      paths: "{{ item }}"
+      patterns: '*.xml,*.properties'
+      recurse: yes
+    with_items: "{{ tomcat_status.stdout.split('\n') }}"
+    when: "tomcat_status_count.stdout >= '1'"
+    register: tomcat_xml_files
+    tags: tomcat_xml_status
+
+  - debug:
+      msg: "Tomcat xml files list is: {{ item }}"
+    with_items: "{{ tomcat_xml_files | json_query('results[*].files[*].path') }}"
+    tags: tomcat_xml_status
+
+  - name: "[TASK_4]Fetching tomcat xml files to ansible server"
+    fetch:
+      src: "{{ item }}"
+      dest: "{{ local_tomcat_config_path }}"
+    with_items: "{{ tomcat_xml_files | json_query('results[*].files[*].path') }}"
+    register: tomcat_xml_copy_status
+    tags: xml_copy_sts
+
+  - debug:
+      msg: "Copying {{ item.item }} file to {{ item.dest }} path in ansible server"
+    with_items: "{{ tomcat_xml_copy_status.results }}"
+    loop_control:
+      label: "{{ item.item }}"
+    tags: xml_copy_sts
+...
