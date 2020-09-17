@@ -24,7 +24,8 @@ try:
                 else:
                         print("Service {0}  still not started".format(sename))
         else:
-                raise Exception("Service not found")
+                #raise Exception("Service not found")
+                print("Service not found")
 
 except:
-                        print("Service {0} doesnt exist".format(sename))
+        print("Service {0} doesnt exist".format(sename))
