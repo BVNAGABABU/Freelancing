@@ -1,3 +1,5 @@
+#credits: https://github.com/aletisunil/Automating_Zoom/blob/master/LICENSE
+
 import os
 import pandas as pd
 import pyautogui
