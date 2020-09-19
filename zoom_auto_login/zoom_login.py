@@ -4,11 +4,11 @@ import pyautogui
 import time
 from datetime import datetime
 
-files_path="C:\\Users\\battina.nagababu\\PycharmProjects\\zoom_meeting_data\\"
+files_path="C:\\Users\\username\\PycharmProjects\\zoom_meeting_data\\"
 
 
 def signIn(meeting_id, password):
-    os.startfile('C:\\Users\\battina.nagababu\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe')
+    os.startfile('C:\\Users\\username\\AppData\\Roaming\\Zoom\\bin\\Zoom.exe')
     time.sleep(3)
 
     join_btn=pyautogui.locateCenterOnScreen(files_path+"joinameeting.png")
