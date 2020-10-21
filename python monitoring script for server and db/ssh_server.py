@@ -2,7 +2,7 @@ import spur
 import subprocess
 
 def spur_test():
-        shell=spur.SshShell(hostname="172.31.41.86", username="onmoawxuser", password="onmobile@awx")
+        shell=spur.SshShell(hostname="172.31.41.86", username="user_name", password="password")
         result=shell.run(["echo", "-n", "Test line"])
         print("Shell output is : %s" %(result.output))
 
