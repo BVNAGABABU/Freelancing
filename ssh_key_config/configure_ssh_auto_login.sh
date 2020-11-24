@@ -2,6 +2,7 @@
 
 #set -x
 
+#Please configure IPs below
 ip_list=("ip_1" "ip_2" "ip_3" "ip_4" "ip_5" "ip_6" "ip_7" "ip_8" "ip_9" "ip_10")
 
 for (( i=0; i<${#ip_list[@]}; i++ ))
