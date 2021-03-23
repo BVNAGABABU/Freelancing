@@ -6,10 +6,20 @@
   gather_facts: no
 
   tasks:
+  - name: "checking grub.conf file"
+    shell: cat /var/tmp/grub_file.txt | grep 'GRUB_CMDLINE_LINUX_DEFAULT' | awk -F '"' '{print $2}'
+    register: grub_conf
+    tags: check_file
+
+  - debug:
+      msg: "Grub conf is : {{ grub_conf.stdout }}"
+    tags: check_file
+
   - name: "Updating grub conf file"
     lineinfile:
       path: "/var/tmp/grub_file.txt"
       backrefs: true
-      regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=.*")$'
       state: present
-      line: '\1 numa_balancing=disable'
+      regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=.*)$'
+      line: 'GRUB_CMDLINE_LINUX_DEFAULT="{{ grub_conf.stdout }} numa_balancing=disable"'
+    when: "'numa_balancing=disable' not in grub_conf.stdout"
