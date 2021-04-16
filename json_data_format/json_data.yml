@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  become: true
+  become_method: sudo
+  remote_user: username
+  gather_facts: no
+
+  vars:
+    json_data: "{{ lookup('file', 'test.json') | from_json }}"
+
+  tasks:
+  - debug:
+      msg: "{{ json_data }}"
+
+  - name: "Print uuid"
+    debug:
+      msg: "{{ item.uuid }}"
+    with_items: "{{ json_data.filesystem }}"
+    loop_control:
+      label: "UUID Data"
+    delegate_to: localhost
