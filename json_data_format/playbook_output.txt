@@ -1,0 +1,39 @@
+PLAY [localhost] *******************************************************************************************************************************************************
+
+TASK [debug] ***********************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": {
+        "filesystem": [
+            {
+                "Devicename": "/dev/sdc",
+                "FSGroup": "sapsys",
+                "FSOwner": "sapadm",
+                "FileSystemType": "xfs",
+                "MountPath": "/usr/sap/",
+                "hostname": "confdevs4hdb",
+                "uuid": "0"
+            },
+            {
+                "Devicename": "/dev/sdd",
+                "FSGroup": "sapsys",
+                "FSOwner": "sapadm",
+                "FileSystemType": "xfs",
+                "MountPath": "/sapmnt",
+                "hostname": "confdevs4hdb",
+                "uuid": "1"
+            }
+        ]
+    }
+}
+
+TASK [Print uuid] ******************************************************************************************************************************************************
+ok: [localhost] => (item=UUID Data) => {
+    "msg": "0"
+}
+ok: [localhost] => (item=UUID Data) => {
+    "msg": "1"
+}
+
+PLAY RECAP *************************************************************************************************************************************************************
+localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
