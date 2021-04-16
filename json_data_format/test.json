@@ -1,0 +1,25 @@
+{
+ "filesystem":
+ [
+         {
+
+      "hostname": "confdevs4hdb",
+      "Devicename": "/dev/sdc",
+      "MountPath": "/usr/sap/",
+      "FileSystemType": "xfs",
+      "FSOwner": "sapadm",
+      "FSGroup": "sapsys",
+      "uuid": "0"
+    },
+     {
+
+      "hostname": "confdevs4hdb",
+      "Devicename": "/dev/sdd",
+      "MountPath": "/sapmnt",
+      "FileSystemType": "xfs",
+      "FSOwner": "sapadm",
+      "FSGroup": "sapsys",
+      "uuid": "1"
+    }
+ ]
+}
