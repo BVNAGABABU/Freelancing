@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  remote_user: user_name
+  gather_facts: no
+
+  vars:
+    local_path: "/var/tmp/test_dir"
+
+  tasks:
+  - name: "Fetch directories in remote server"
+    synchronize:
+      mode: pull
+      src: "{{ item }}"
+      dest: "{{ local_path }}"
+    with_items:
+      - "/var/tmp/test_1"
+      - "/var/tmp/test_2"
+      - "/var/tmp/test_3"
+      - "/var/tmp/test_4"
+      - "/var/tmp/test_5"
+      - "/var/tmp/test_6"
+      - "/var/tmp/test_7"
+      - "/var/tmp/test_8"
+    register: fetch_sts
+    ignore_errors: yes
+
+  - debug:
+      msg: "Fetch directories status: {{ fetch_sts }}"
