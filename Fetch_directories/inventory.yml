@@ -1,0 +1,5 @@
+[all]
+172.0.0.1 ansible_host=172.0.0.1 ansible_user=username
+172.0.0.2 ansible_host=172.0.0.2 ansible_user=username
+172.0.0.3 ansible_host=172.0.0.3 ansible_user=username
+172.0.0.4 ansible_host=172.0.0.4 ansible_user=username
