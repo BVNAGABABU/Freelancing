@@ -13,7 +13,7 @@
     synchronize:
       mode: pull
       src: "{{ item }}"
-      dest: "{{ local_path }}"
+      dest: "{{ local_path }}/{{ ansible_host }}"
     with_items:
       - "/var/tmp/test_1"
       - "/var/tmp/test_2"
