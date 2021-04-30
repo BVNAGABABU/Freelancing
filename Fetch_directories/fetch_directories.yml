@@ -9,7 +9,7 @@
     local_path: "/var/tmp/test_dir"
 
   tasks:
-  - name: "Fetch directories in remote server"
+  - name: "Fetch directories from remote server to local server"
     synchronize:
       mode: pull
       src: "{{ item }}"
