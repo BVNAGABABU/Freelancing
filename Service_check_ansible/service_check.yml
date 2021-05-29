@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  remote_user: user_name
+  gather_facts: yes
+
+  tasks:
+  - name: check services
+    service_facts:
+
+  - debug:
+      msg: "Mysql service status: {{ ansible_facts.services['mysql.service'].state }}"
+    when: "ansible_facts.services['mysql.service'].state is defined"
+
+  - debug:
+      msg: "Mysql service is not running"
+    when: "ansible_facts.services['mysql.service'].state is not defined"
