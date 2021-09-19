@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  remote_user: username
+  gather_facts: yes
+  
+  vars_files: "/variable_file.yml"
+  
+  tasks:
+  - name: "[TASK_1] Finding files in remote server"
+    find:
+	  paths: "/remote/server/files/path"
+	  pattern: "*.txt"
+	register: remote_server_files
+	when: "ansible_host in fetch_servers"
+	
+  - name: "[TASK_2] Fetching files from remote server"
+    fetch:
+	  src: "{{ item }}"
+	  dest: "{{ ansible_master_server_path }}"
+	with_items: "{{ remote_server_files | json_query('results[*].files[*].path') }}"
+	register: fetch_remote_files
+	when: "ansible_host in fetch_servers"
+	
+  - name: "[TASK_3] Copy files to remote servers"
+    copy:
+	  src: "{{ item }}"
+	  dest: "{{ remote server path }}"
+	with_items: "{{ ansible_master_server_path }}/file_names"
+	register: copy_files
+	when: "ansible_host in copy_servers"
+	
