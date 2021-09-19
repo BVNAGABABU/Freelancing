@@ -14,7 +14,7 @@
       pattern: "*.txt"
     register: remote_server_files
     when: "ansible_host in fetch_servers"
-	
+    
   - name: "[TASK_2] Fetching files from remote server"
     fetch:
       src: "{{ item }}"
@@ -22,7 +22,7 @@
     with_items: "{{ remote_server_files | json_query('results[*].files[*].path') }}"
     register: fetch_remote_files
     when: "ansible_host in fetch_servers"
-	
+    
   - name: "[TASK_3] Copy files to remote servers"
     copy:
       src: "{{ item }}"
@@ -30,4 +30,4 @@
     with_items: "{{ ansible_master_server_path }}/file_names"
     register: copy_files
     when: "ansible_host in copy_servers"
-	
+    
