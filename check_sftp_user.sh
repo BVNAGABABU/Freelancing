@@ -1,6 +1,8 @@
 #!/bin/bash
 
-array_data=(user_1 user_2 user_3 user_4 user_5 user_6)
+IFS=$'\n'
+array_data=($(cat data.txt))
+
 available_users=()
 not_available_users=()
 
